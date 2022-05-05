@@ -1,20 +1,16 @@
+
 const router = require('express').Router();
+const { verifyAuth } = require('../security');
+const authRoutes = require('./auth');
+const contactsRoutes = require('./contacts');
+const apiRoutes = require('./api');
 
-const detailAction = require('../actions/detail.action');
-const formAction = require('../actions/form.action');
-const listAction = require('../actions/list.action');
-const removeAction = require('../actions/remove.action');
-const saveAction = require('../actions/save.action');
-const loginAction = require('../actions/loginAction');
+router.use(verifyAuth);
 
-router.get('/contacts', listAction);
-router.get('/contacts/:id', detailAction);
-router.get('/contacts/:id/form', formAction);
-router.post('/contacts/:id/form', saveAction);
-router.get('/contacts/:id/delete', removeAction);
-router.get('/login', loginAction);
+router.get('/', (_, res) => res.redirect('/contacts'));
 
-
-
+router.use('/auth', authRoutes);
+router.use('/contacts', contactsRoutes);
+router.use('/api', apiRoutes);
 
 module.exports = router;

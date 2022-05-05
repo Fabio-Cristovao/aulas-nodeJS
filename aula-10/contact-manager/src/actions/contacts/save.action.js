@@ -1,11 +1,13 @@
-const { create, update } = require("../services/contacts");
+const { create, update } = require("../../services/contacts");
 
 module.exports = async (req, res) => {
     let { id } = req.params;
-    const { name, email, phone } = req.body;
+    const { name, email, phone, birthday } = req.body;
+    const { user } = req.session;
+    const image = req.files?.image;
 
     if (id === 'add') {
-        const contact = await create(name, email, phone);
+        const contact = await create(name, email, phone, birthday, image, user);
         id = contact.id;
     } else {
         try {
